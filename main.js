@@ -17,15 +17,6 @@ console.log(data);
   });
   
   tableEvents.querySelector('tbody').appendChild(tr);
-
-  // let li = document.createElement("li");
-  // li.className = "list-group-item";
-  // li.setAttribute("data-id", doc.id);
-
-  // let data = doc.data();
-
-  // li.innerText = data.name + " - " + data.location;
-  // eventList.appendChild(li);
 }
 
 db.collection("events")
