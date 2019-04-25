@@ -1,14 +1,31 @@
 const eventList = document.querySelector(".list-group");
+const tableEvents = document.getElementById('eventTable');
+const frm = document.querySelector("#frmEvents");
 
 function renderEvent(doc) {
-  let li = document.createElement("li");
-  li.className = "list-group-item";
-  li.setAttribute("data-id", doc.id);
+  let tr = document.createElement("tr");
+  tr.setAttribute('data-id', doc.id);
 
   let data = doc.data();
+console.log(data);
+  Object.keys(data).forEach(key => {
+    let td = document.createElement('td');
+    console.log(typeof data[key]);
+    td.innerText = typeof data[key] === 'number' ? new Date(data[key] * 1000).toUTCString() : data[key];
 
-  li.innerText = data.name + " - " + data.location;
-  eventList.appendChild(li);
+    tr.appendChild(td);
+  });
+  
+  tableEvents.querySelector('tbody').appendChild(tr);
+
+  // let li = document.createElement("li");
+  // li.className = "list-group-item";
+  // li.setAttribute("data-id", doc.id);
+
+  // let data = doc.data();
+
+  // li.innerText = data.name + " - " + data.location;
+  // eventList.appendChild(li);
 }
 
 db.collection("events")
@@ -18,3 +35,15 @@ db.collection("events")
       renderEvent(doc);
     });
   });
+
+frm.addEventListener("submit", function(e) {
+  e.preventDefault();
+  db.collection('events').add({
+    name: frm.name.value,
+    description: frm.description.value,
+    location: frm.location.value,
+    date: Date.now()
+  });
+
+  frm.reset();
+});
